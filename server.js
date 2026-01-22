@@ -5,6 +5,8 @@ const morgan = require("morgan");
 
 const incomeCategoriesRoute = require("./routes/IncomeCategory.route");
 const expenseCategoriesRoute = require("./routes/expenseCategory.route");
+const userRoute = require("./routes/user.route");
+const authRoute = require("./routes/auth.route");
 const ApiError = require("./util/ApiError");
 
 dotenv.config({ path: "./config.env" });
@@ -26,6 +28,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/income-categories", incomeCategoriesRoute);
 app.use("/api/v1/expense-categories", expenseCategoriesRoute);
+app.use("/api/v1/users", userRoute);
+app.use("/api/v1/auth", authRoute);
 
 app.all(/.*/, (req, res, next) => {
   next(

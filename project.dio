@@ -19,6 +19,9 @@
                 <mxCell id="15" value="" style="edgeStyle=none;html=1;" parent="1" source="4" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
+                <mxCell id="39" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="4" target="37">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
                 <mxCell id="4" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;محفظة&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="500" y="230" width="120" height="70" as="geometry"/>
                 </mxCell>
@@ -74,9 +77,6 @@
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="560" y="450" as="sourcePoint"/>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="39" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="37" target="14">
-                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="37" value="&lt;span style=&quot;font-size: 18px;&quot;&gt;بيانات المحفظة:&lt;br&gt;اسم المحفظة&lt;br&gt;الفلوس اللي في المحقظة&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;id المستخدم&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="500" y="320" width="120" height="160" as="geometry"/>

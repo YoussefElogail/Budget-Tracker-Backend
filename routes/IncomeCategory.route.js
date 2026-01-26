@@ -14,12 +14,15 @@ const {
   deleteCategoryValidator,
 } = require("../util/validators/category.validator");
 const IncomeCategory = require("../models/incomeCategory.model");
+const { protect, allowedTo } = require("../controllers/auth.controller");
 
 const router = Router();
 
 router
   .route("/")
   .post(
+    protect,
+    allowedTo("admin"),
     createCategoryValidator(IncomeCategory, "income category"),
     createIncomeCategory,
   )

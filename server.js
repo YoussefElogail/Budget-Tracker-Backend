@@ -7,6 +7,9 @@ const incomeCategoriesRoute = require("./routes/IncomeCategory.route");
 const expenseCategoriesRoute = require("./routes/expenseCategory.route");
 const userRoute = require("./routes/user.route");
 const authRoute = require("./routes/auth.route");
+const walletRoute = require("./routes/wallet.route");
+const expenseRoute = require("./routes/expense.route");
+
 const ApiError = require("./util/ApiError");
 
 dotenv.config({ path: "./config.env" });
@@ -30,6 +33,8 @@ app.use("/api/v1/income-categories", incomeCategoriesRoute);
 app.use("/api/v1/expense-categories", expenseCategoriesRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/wallets", walletRoute);
+app.use("/api/v1/expenses", expenseRoute);
 
 app.all(/.*/, (req, res, next) => {
   next(
@@ -54,7 +59,7 @@ const server = app.listen(process.env.PORT, () => {
 
 process.on("unhandledRejection", (err) => {
   console.log(`Unhandled Rejection Error: ${err.name} | ${err.message}`);
-
+  console.log(err);
   server.close(() => {
     console.log("Server closed. Process exiting...");
     process.exit(1);

@@ -3,15 +3,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 
-const incomeCategoriesRoute = require("./routes/IncomeCategory.route");
-const expenseCategoriesRoute = require("./routes/expenseCategory.route");
-const userRoute = require("./routes/user.route");
-const authRoute = require("./routes/auth.route");
-const walletRoute = require("./routes/wallet.route");
-const expenseRoute = require("./routes/expense.route");
-const incomeRoute = require("./routes/income.route");
-
 const ApiError = require("./util/ApiError");
+const routes = require("./routes/index.route");
 
 dotenv.config({ path: "./config.env" });
 
@@ -26,17 +19,8 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.get("/", (req, res) => {
-  res.send(`<h1>hello to Budget Tracker app</h1>`);
-});
 
-app.use("/api/v1/income-categories", incomeCategoriesRoute);
-app.use("/api/v1/expense-categories", expenseCategoriesRoute);
-app.use("/api/v1/users", userRoute);
-app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/wallets", walletRoute);
-app.use("/api/v1/expenses", expenseRoute);
-app.use("/api/v1/incomes", incomeRoute);
+routes(app);
 
 app.all(/.*/, (req, res, next) => {
   next(
@@ -51,7 +35,8 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode).json({
     status: err.status,
     message: err.message,
-    stack: err.stack,
+    stack: process.env.NODE_ENV === "development" && err.stack,
+    error: process.env.NODE_ENV === "development" && err,
   });
 });
 
@@ -67,5 +52,3 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
-
-module.exports = app;

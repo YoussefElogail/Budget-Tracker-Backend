@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Wallet = require("./wallet.model");
 
 const expenseSchema = new mongoose.Schema(
   {
@@ -31,8 +32,41 @@ const expenseSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
+
+expenseSchema.virtual("userWallet", {
+  ref: "Wallet",
+  localField: "wallet",
+  foreignField: "_id",
+  justOne: true,
+});
+
+expenseSchema.virtual("incomeCategory", {
+  ref: "IncomeCategory",
+  localField: "category",
+  foreignField: "_id",
+  justOne: true,
+});
+
+expenseSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "userWallet",
+    select: "name balance ",
+  });
+  this.populate({
+    path: "incomeCategory",
+    select: "name",
+  });
+});
+
+expenseSchema.post("save", async function () {
+  await Wallet.findByIdAndUpdate(this.wallet, {
+    $inc: { balance: -this.amount },
+  });
+});
 
 const Expense = mongoose.model("Expense", expenseSchema);
 

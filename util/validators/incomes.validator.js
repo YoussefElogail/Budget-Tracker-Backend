@@ -32,9 +32,9 @@ const createIncomeValidator = [
           STATUS_CODE.UNAUTHORIZED,
         );
       }
-      if (val > wallet.balance) {
+      if (val < 0) {
         throw new ApiError(
-          "Income amount is greater than wallet balance",
+          "Income amount must be greater than 0",
           STATUS_CODE.BAD_REQUEST,
         );
       }
@@ -82,9 +82,9 @@ const updateIncomeValidator = [
           STATUS_CODE.UNAUTHORIZED,
         );
       }
-      if (val > wallet.balance) {
+      if (val < 0) {
         throw new ApiError(
-          "Income amount is greater than wallet balance",
+          "Income amount must be greater than 0",
           STATUS_CODE.BAD_REQUEST,
         );
       }

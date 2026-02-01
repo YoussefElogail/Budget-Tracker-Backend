@@ -38,6 +38,12 @@ const createExpenseValidator = [
           STATUS_CODE.BAD_REQUEST,
         );
       }
+      if (val < 0) {
+        throw new ApiError(
+          "Expense amount must be greater than 0",
+          STATUS_CODE.BAD_REQUEST,
+        );
+      }
       return true;
     }),
   check("date").optional().isDate().withMessage("Expense date must be date"),
@@ -85,6 +91,12 @@ const updateExpenseValidator = [
       if (val > wallet.balance) {
         throw new ApiError(
           "Expense amount is greater than wallet balance",
+          STATUS_CODE.BAD_REQUEST,
+        );
+      }
+      if (val < 0) {
+        throw new ApiError(
+          "Expense amount must be greater than 0",
           STATUS_CODE.BAD_REQUEST,
         );
       }

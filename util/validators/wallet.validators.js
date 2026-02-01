@@ -3,6 +3,8 @@ const { check } = require("express-validator");
 const ApiError = require("../ApiError");
 const validatorMiddleware = require("../../middleware/validatorMiddleware");
 const User = require("../../models/user.model");
+const Wallet = require("../../models/wallet.model");
+const { STATUS_CODE } = require("../constants");
 
 const createWalletValidator = [
   check("name")
@@ -19,7 +21,16 @@ const createWalletValidator = [
     .custom(async (value, { req }) => {
       const user = await User.findOne({ _id: value });
       if (!user) {
-        throw new ApiError("user is not exists", 404);
+        throw new ApiError("user is not exists", STATUS_CODE.NOT_FOUND);
+      }
+      if (
+        user._id.toString() !== req.user.id.toString() &&
+        req.user.role !== "admin"
+      ) {
+        throw new ApiError(
+          "You can create wallet only for your account",
+          STATUS_CODE.UNAUTHORIZED,
+        );
       }
       return true;
     }),
@@ -34,7 +45,7 @@ const updateWalletValidator = [
     .custom(async (value, { req }) => {
       const currentItem = await Wallet.findOne({ _id: req.params.id });
       if (!currentItem) {
-        throw new ApiError("wallet is not exists", 404);
+        throw new ApiError("wallet is not exists", STATUS_CODE.NOT_FOUND);
       }
       return true;
     }),
@@ -52,7 +63,16 @@ const updateWalletValidator = [
     .custom(async (value, { req }) => {
       const user = await User.findOne({ _id: value });
       if (!user) {
-        throw new ApiError("user is not exists", 404);
+        throw new ApiError("user is not exists", STATUS_CODE.NOT_FOUND);
+      }
+      if (
+        user._id.toString() !== req.user.id.toString() &&
+        req.user.role !== "admin"
+      ) {
+        throw new ApiError(
+          "You can update wallet only for your account",
+          STATUS_CODE.UNAUTHORIZED,
+        );
       }
       return true;
     }),
@@ -67,7 +87,7 @@ const showWalletValidator = [
     .custom(async (value, { req }) => {
       const item = await Wallet.findOne({ _id: value });
       if (!item) {
-        throw ApiError("wallet is not exists", 404);
+        throw ApiError("wallet is not exists", STATUS_CODE.NOT_FOUND);
       }
       return true;
     }),
@@ -81,8 +101,18 @@ const deleteWalletValidator = [
     .bail()
     .custom(async (value, { req }) => {
       const item = await Wallet.findOne({ _id: value });
+      console.log(item);
       if (!item) {
-        throw ApiError("wallet is not exists", 404);
+        throw ApiError("wallet is not exists", STATUS_CODE.NOT_FOUND);
+      }
+      if (
+        item.user.toString() !== req.user.id.toString() &&
+        req.user.role !== "admin"
+      ) {
+        throw new ApiError(
+          "You can delete wallet only for your account",
+          STATUS_CODE.UNAUTHORIZED,
+        );
       }
       return true;
     }),
